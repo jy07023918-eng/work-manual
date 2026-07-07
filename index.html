@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>회사 업무 매뉴얼</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>📖 회사 업무 매뉴얼</h1>
+
+<input id="searchInput" type="text" placeholder="업무명 또는 키워드 검색">
+
+<div class="form-box">
+  <input id="titleInput" type="text" placeholder="업무 제목">
+  <input id="tagsInput" type="text" placeholder="키워드, 쉼표로 구분">
+  <textarea id="contentInput" placeholder="매뉴얼 내용 작성"></textarea>
+
+  <button onclick="saveManual()">저장</button>
+  <button onclick="resetForm()">새로 작성</button>
+</div>
+
+<div id="manualList"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
