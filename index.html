@@ -10,41 +10,88 @@
 </head>
 
 <body>
-  <header class="top-header">
-    <h1>📚 회사 업무 매뉴얼</h1>
-    <p>검색하고, 수정하고, 바로 저장하는 업무 매뉴얼 시스템</p>
-  </header>
+  <section id="loginScreen" class="login-screen">
+    <div class="login-box">
+      <h1>🔒 회사 업무 매뉴얼</h1>
+      <p>비밀번호를 입력하세요.</p>
+      <input id="passwordInput" type="password" placeholder="비밀번호">
+      <button id="loginBtn">입장</button>
+      <p id="loginError" class="error-text"></p>
+    </div>
+  </section>
 
-  <main class="app">
-    <section class="search-section">
-      <input id="searchInput" type="text" placeholder="업무명, 키워드, 내용 검색">
-      <button id="newManualBtn">+ 새 매뉴얼</button>
-    </section>
+  <section id="mainApp" class="hidden">
+    <header class="top-header">
+      <div>
+        <h1>📚 회사 업무 매뉴얼</h1>
+        <p>검색하고, 확인하고, 필요한 경우 수정하는 업무 매뉴얼 시스템</p>
+      </div>
+      <button id="adminBtn">관리자 설정</button>
+    </header>
 
-    <section class="layout">
-      <aside class="manual-list-area">
-        <h2>매뉴얼 목록</h2>
-        <div id="manualList"></div>
-      </aside>
-
-      <section class="editor-area">
-        <input id="titleInput" type="text" placeholder="매뉴얼 제목">
-
-        <input id="tagsInput" type="text" placeholder="키워드 예: 퀵, ERP, 인감">
-
-        <div id="editor"></div>
-
-        <div class="button-row">
-          <button id="saveBtn">저장</button>
-          <button id="deleteBtn" class="danger">삭제</button>
-          <button id="clearBtn" class="sub">비우기</button>
-        </div>
+    <main class="app">
+      <section class="search-section">
+        <input id="searchInput" type="text" placeholder="업무명, 키워드, 내용 검색">
+        <button id="newManualBtn">+ 새 매뉴얼</button>
       </section>
-    </section>
-  </main>
+
+      <section class="layout">
+        <aside class="manual-list-area">
+          <h2>매뉴얼 목록</h2>
+          <div id="manualList"></div>
+        </aside>
+
+        <section class="viewer-area" id="viewerArea">
+          <div class="viewer-top">
+            <div>
+              <h2 id="viewTitle">매뉴얼을 선택하세요</h2>
+              <p id="viewTags" class="tag-text"></p>
+            </div>
+            <button id="editBtn" class="hidden">수정</button>
+          </div>
+          <div id="viewContent" class="view-content">
+            왼쪽 목록에서 매뉴얼을 선택하면 내용이 표시됩니다.
+          </div>
+        </section>
+
+        <section class="editor-area hidden" id="editorArea">
+          <input id="titleInput" type="text" placeholder="매뉴얼 제목">
+          <input id="tagsInput" type="text" placeholder="키워드 예: 퀵, ERP, 인감">
+
+          <div id="editor"></div>
+
+          <div class="button-row">
+            <button id="saveBtn">저장</button>
+            <button id="deleteBtn" class="danger">삭제</button>
+            <button id="cancelEditBtn" class="sub">취소</button>
+          </div>
+        </section>
+      </section>
+    </main>
+  </section>
+
+  <div id="adminModal" class="modal hidden">
+    <div class="modal-box">
+      <h2>관리자 설정</h2>
+
+      <label>현재 관리자 비밀번호</label>
+      <input id="adminPasswordInput" type="password" placeholder="관리자 비밀번호">
+
+      <label>새 입장 비밀번호</label>
+      <input id="newPasswordInput" type="password" placeholder="새 비밀번호">
+
+      <div class="button-row">
+        <button id="changePasswordBtn">비밀번호 변경</button>
+        <button id="closeAdminBtn" class="sub">닫기</button>
+      </div>
+
+      <p class="notice">
+        ※ 현재 방식은 내부 공유용 간단 잠금입니다. 강한 보안이 필요하면 로그인 방식으로 바꿔야 합니다.
+      </p>
+    </div>
+  </div>
 
   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-
   <script type="module" src="firebase.js"></script>
   <script type="module" src="app.js"></script>
 </body>
