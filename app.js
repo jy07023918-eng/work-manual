@@ -305,7 +305,7 @@ onSnapshot(manualQuery, snapshot => {
 
   if (selectedId && mode === "view") {
     const exists = manuals.find(m => m.id === selectedId);
-    if (exists) openViewer(selectedId);
+    if (exists) openViewer(selectedId)
   }
 });
 
