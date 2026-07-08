@@ -75,10 +75,10 @@ setTimeout(() => {
   const exampleBtn = document.querySelector(".ql-exampleMark");
   const phoneBtn = document.querySelector(".ql-phoneMark");
 
-  if (circleBtn) circleBtn.innerHTML = "①";
-  if (noticeBtn) noticeBtn.innerHTML = "※";
-  if (exampleBtn) exampleBtn.innerHTML = "예)";
-  if (phoneBtn) phoneBtn.innerHTML = "☎";
+  if (circleBtn) circleBtn.textContent = "①";
+if (noticeBtn) noticeBtn.textContent = "※";
+if (exampleBtn) exampleBtn.textContent = "예)";
+if (phoneBtn) phoneBtn.textContent = "☎";
 }, 100);
 
 let manuals = [];
