@@ -12,18 +12,6 @@ import {
   serverTimestamp
 } from "./firebase.js";
 
-const Parchment = Quill.import("parchment");
-
-const CircleList = new Parchment.ClassAttributor(
-  "circleList",
-  "ql-circle-list",
-  {
-    scope: Parchment.Scope.BLOCK
-  }
-);
-
-Quill.register(CircleList, true);
-
 const customToolbar = [
   [{ header: [1, 2, 3, false] }],
   ["bold", "italic", "underline"],
@@ -38,35 +26,23 @@ const quill = new Quill("#editor", {
   modules: {
     toolbar: {
       container: customToolbar,
-      handlers: {
-        circleNumber: function () {
-          const range = quill.getSelection(true);
-          if (!range) return;
+handlers: {
+  circleNumber: function () {
+    insertTextAtCursor("① ");
+  },
 
-          const formats = quill.getFormat(range);
+  noticeMark: function () {
+    insertTextAtCursor("※ ");
+  },
 
-          if (formats.circleList) {
-            quill.formatLine(range.index, range.length, "circleList", false);
-          } else {
-            quill.formatLine(range.index, range.length, "circleList", "item");
-          }
-        },
+  exampleMark: function () {
+    insertTextAtCursor("예) ");
+  },
 
-        noticeMark: function () {
-          insertTextAtCursor("※ ");
-        },
-
-        exampleMark: function () {
-          insertTextAtCursor("예) ");
-        },
-
-        phoneMark: function () {
-          insertTextAtCursor("☎ ");
-        }
-      }
-    }
+  phoneMark: function () {
+    insertTextAtCursor("☎ ");
   }
-});
+}
 
 function insertTextAtCursor(text) {
   const range = quill.getSelection(true);
