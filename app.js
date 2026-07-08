@@ -12,6 +12,18 @@ import {
   serverTimestamp
 } from "./firebase.js";
 
+const Parchment = Quill.import("parchment");
+
+const CircleList = new Parchment.Attributor.Class(
+  "circleList",
+  "ql-circle-list",
+  {
+    scope: Parchment.Scope.BLOCK
+  }
+);
+
+Quill.register(CircleList, true);
+
 const customToolbar = [
   [{ header: [1, 2, 3, false] }],
   ["bold", "italic", "underline"],
@@ -27,9 +39,18 @@ const quill = new Quill("#editor", {
     toolbar: {
       container: customToolbar,
       handlers: {
-        circleNumber: function () {
-          insertCircleNumber();
-        },
+       circleNumber: function () {
+  const range = quill.getSelection(true);
+  if (!range) return;
+
+  const formats = quill.getFormat(range);
+
+  if (formats.circleList) {
+    quill.formatLine(range.index, range.length, "circleList", false);
+  } else {
+    quill.formatLine(range.index, range.length, "circleList", "item");
+  }
+},
         noticeMark: function () {
           insertTextAtCursor("※ ");
         },
@@ -44,14 +65,6 @@ const quill = new Quill("#editor", {
   }
 });
 
-let circleNumberIndex = 0;
-const circleNumbers = [
-  "①", "②", "③", "④", "⑤",
-  "⑥", "⑦", "⑧", "⑨", "⑩",
-  "⑪", "⑫", "⑬", "⑭", "⑮",
-  "⑯", "⑰", "⑱", "⑲", "⑳"
-];
-
 function insertTextAtCursor(text) {
   const range = quill.getSelection(true);
   const index = range ? range.index : quill.getLength();
@@ -64,20 +77,6 @@ function getLineStartIndex(index) {
   const lastNewLine = textBefore.lastIndexOf("\n");
   return lastNewLine + 1;
 }
-
-function insertCircleNumber() {
-  const range = quill.getSelection(true);
-  const index = range ? range.index : quill.getLength();
-  const lineStart = getLineStartIndex(index);
-
-  const currentLineText = quill.getText(lineStart, 5);
-  const circlePattern = /^[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]\s/;
-
-  if (circlePattern.test(currentLineText)) {
-    quill.deleteText(lineStart, 2);
-    quill.setSelection(Math.max(index - 2, lineStart));
-    return;
-  }
 
   const number = circleNumbers[circleNumberIndex] + " ";
   quill.insertText(lineStart, number);
