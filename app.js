@@ -15,15 +15,34 @@ import {
 const quill = new Quill("#editor", {
   theme: "snow",
   modules: {
-    toolbar: [
-      [{ header: [1, 2, 3, false] }],
-      ["bold", "italic", "underline"],
-      [{ background: [] }, { color: [] }],
-      [{ list: "bullet" }, { list: "ordered" }],
-      ["clean"]
-    ]
+    toolbar: {
+      container: [
+        [{ header: [1, 2, 3, false] }],
+        ["bold", "italic", "underline"],
+        [{ background: [] }, { color: [] }],
+        [{ list: "bullet" }, { list: "ordered" }],
+        ["circledNumber", "clean"]
+      ],
+      handlers: {
+        circledNumber: insertCircledNumber
+      }
+    }
   }
 });
+
+const CIRCLED_NUMBERS = [
+  "①", "②", "③", "④", "⑤",
+  "⑥", "⑦", "⑧", "⑨", "⑩",
+  "⑪", "⑫", "⑬", "⑭", "⑮",
+  "⑯", "⑰", "⑱", "⑲", "⑳"
+];
+
+const circledNumberButton = document.querySelector(".ql-circledNumber");
+if (circledNumberButton) {
+  circledNumberButton.setAttribute("type", "button");
+  circledNumberButton.setAttribute("title", "원형 번호");
+  circledNumberButton.setAttribute("aria-label", "원형 번호");
+}
 
 let manuals = [];
 let selectedId = null;
@@ -99,6 +118,23 @@ function stripHtml(html) {
   const div = document.createElement("div");
   div.innerHTML = html || "";
   return div.textContent || div.innerText || "";
+}
+
+function getNextCircledNumber() {
+  const text = quill.getText();
+  const matches = text.match(/[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]/g) || [];
+
+  return CIRCLED_NUMBERS[matches.length % CIRCLED_NUMBERS.length];
+}
+
+function insertCircledNumber() {
+  quill.focus();
+
+  const range = quill.getSelection(true);
+  const marker = `${getNextCircledNumber()} `;
+
+  quill.insertText(range.index, marker, "user");
+  quill.setSelection(range.index + marker.length, 0, "user");
 }
 
 function renderManuals() {
