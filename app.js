@@ -59,14 +59,35 @@ function insertTextAtCursor(text) {
   quill.setSelection(index + text.length);
 }
 
+function getLineStartIndex(index) {
+  const textBefore = quill.getText(0, index);
+  const lastNewLine = textBefore.lastIndexOf("\n");
+  return lastNewLine + 1;
+}
+
 function insertCircleNumber() {
-  const number = circleNumbers[circleNumberIndex];
-  insertTextAtCursor(number + " ");
+  const range = quill.getSelection(true);
+  const index = range ? range.index : quill.getLength();
+  const lineStart = getLineStartIndex(index);
+
+  const currentLineText = quill.getText(lineStart, 5);
+  const circlePattern = /^[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]\s/;
+
+  if (circlePattern.test(currentLineText)) {
+    quill.deleteText(lineStart, 2);
+    quill.setSelection(Math.max(index - 2, lineStart));
+    return;
+  }
+
+  const number = circleNumbers[circleNumberIndex] + " ";
+  quill.insertText(lineStart, number);
 
   circleNumberIndex++;
   if (circleNumberIndex >= circleNumbers.length) {
     circleNumberIndex = 0;
   }
+
+  quill.setSelection(index + number.length);
 }
 
 setTimeout(() => {
