@@ -182,6 +182,12 @@ button:hover{
     margin-bottom:20px;
 }
 
+.ql-toolbar button.ql-circledNumber::before{
+    content:"①";
+    font-size:15px;
+    line-height:1;
+}
+
 .button-row{
 
     display:flex;
