@@ -20,6 +20,7 @@ const quill = new Quill("#editor", {
       ["bold", "italic", "underline"],
       [{ background: [] }, { color: [] }],
       [{ list: "bullet" }, { list: "ordered" }],
+      [{ indent: "-1" }, { indent: "+1" }],
       ["clean"]
     ]
   }
