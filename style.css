@@ -345,3 +345,45 @@ flex-direction:column;
   width: auto !important;
   min-width: 32px !important;
 }
+
+/* 커스텀 툴바 버튼 강제 표시 */
+
+.ql-toolbar button.ql-circleNumber::before {
+  content: "①";
+}
+
+.ql-toolbar button.ql-noticeMark::before {
+  content: "※";
+}
+
+.ql-toolbar button.ql-exampleMark::before {
+  content: "예)";
+}
+
+.ql-toolbar button.ql-phoneMark::before {
+  content: "☎";
+}
+
+.ql-toolbar button.ql-circleNumber,
+.ql-toolbar button.ql-noticeMark,
+.ql-toolbar button.ql-exampleMark,
+.ql-toolbar button.ql-phoneMark {
+  color: #1f4e79 !important;
+  background: #eef5fb !important;
+  border: 1px solid #c9ddeb !important;
+  border-radius: 6px !important;
+  width: auto !important;
+  min-width: 36px !important;
+  height: 28px !important;
+  padding: 3px 8px !important;
+  margin: 0 3px !important;
+  font-weight: bold !important;
+  font-size: 13px !important;
+}
+
+.ql-toolbar button.ql-circleNumber:hover,
+.ql-toolbar button.ql-noticeMark:hover,
+.ql-toolbar button.ql-exampleMark:hover,
+.ql-toolbar button.ql-phoneMark:hover {
+  background: #dcecf8 !important;
+}
