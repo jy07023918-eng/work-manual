@@ -12,18 +12,74 @@ import {
   serverTimestamp
 } from "./firebase.js";
 
+const customToolbar = [
+  [{ header: [1, 2, 3, false] }],
+  ["bold", "italic", "underline"],
+  [{ background: [] }, { color: [] }],
+  [{ list: "bullet" }, { list: "ordered" }],
+  ["circleNumber", "noticeMark", "exampleMark", "phoneMark"],
+  ["clean"]
+];
+
 const quill = new Quill("#editor", {
   theme: "snow",
   modules: {
-    toolbar: [
-      [{ header: [1, 2, 3, false] }],
-      ["bold", "italic", "underline"],
-      [{ background: [] }, { color: [] }],
-      [{ list: "bullet" }, { list: "ordered" }],
-      ["clean"]
-    ]
+    toolbar: {
+      container: customToolbar,
+      handlers: {
+        circleNumber: function () {
+          insertCircleNumber();
+        },
+        noticeMark: function () {
+          insertTextAtCursor("※ ");
+        },
+        exampleMark: function () {
+          insertTextAtCursor("예) ");
+        },
+        phoneMark: function () {
+          insertTextAtCursor("☎ ");
+        }
+      }
+    }
   }
 });
+
+let circleNumberIndex = 0;
+const circleNumbers = [
+  "①", "②", "③", "④", "⑤",
+  "⑥", "⑦", "⑧", "⑨", "⑩",
+  "⑪", "⑫", "⑬", "⑭", "⑮",
+  "⑯", "⑰", "⑱", "⑲", "⑳"
+];
+
+function insertTextAtCursor(text) {
+  const range = quill.getSelection(true);
+  const index = range ? range.index : quill.getLength();
+  quill.insertText(index, text);
+  quill.setSelection(index + text.length);
+}
+
+function insertCircleNumber() {
+  const number = circleNumbers[circleNumberIndex];
+  insertTextAtCursor(number + " ");
+
+  circleNumberIndex++;
+  if (circleNumberIndex >= circleNumbers.length) {
+    circleNumberIndex = 0;
+  }
+}
+
+setTimeout(() => {
+  const circleBtn = document.querySelector(".ql-circleNumber");
+  const noticeBtn = document.querySelector(".ql-noticeMark");
+  const exampleBtn = document.querySelector(".ql-exampleMark");
+  const phoneBtn = document.querySelector(".ql-phoneMark");
+
+  if (circleBtn) circleBtn.innerHTML = "①";
+  if (noticeBtn) noticeBtn.innerHTML = "※";
+  if (exampleBtn) exampleBtn.innerHTML = "예)";
+  if (phoneBtn) phoneBtn.innerHTML = "☎";
+}, 100);
 
 let manuals = [];
 let selectedId = null;
@@ -160,6 +216,7 @@ function openViewer(id) {
 function openEditorForNew() {
   selectedId = null;
   mode = "edit";
+  circleNumberIndex = 0;
 
   viewerArea.classList.add("hidden");
   editorArea.classList.remove("hidden");
@@ -181,6 +238,7 @@ function openEditorForSelected() {
   if (!manual) return;
 
   mode = "edit";
+  circleNumberIndex = 0;
 
   viewerArea.classList.add("hidden");
   editorArea.classList.remove("hidden");
