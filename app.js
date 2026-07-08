@@ -39,24 +39,27 @@ const quill = new Quill("#editor", {
     toolbar: {
       container: customToolbar,
       handlers: {
-       circleNumber: function () {
-  const range = quill.getSelection(true);
-  if (!range) return;
+        circleNumber: function () {
+          const range = quill.getSelection(true);
+          if (!range) return;
 
-  const formats = quill.getFormat(range);
+          const formats = quill.getFormat(range);
 
-  if (formats.circleList) {
-    quill.formatLine(range.index, range.length, "circleList", false);
-  } else {
-    quill.formatLine(range.index, range.length, "circleList", "item");
-  }
-},
+          if (formats.circleList) {
+            quill.formatLine(range.index, range.length, "circleList", false);
+          } else {
+            quill.formatLine(range.index, range.length, "circleList", "item");
+          }
+        },
+
         noticeMark: function () {
           insertTextAtCursor("※ ");
         },
+
         exampleMark: function () {
           insertTextAtCursor("예) ");
         },
+
         phoneMark: function () {
           insertTextAtCursor("☎ ");
         }
@@ -72,23 +75,6 @@ function insertTextAtCursor(text) {
   quill.setSelection(index + text.length);
 }
 
-function getLineStartIndex(index) {
-  const textBefore = quill.getText(0, index);
-  const lastNewLine = textBefore.lastIndexOf("\n");
-  return lastNewLine + 1;
-}
-
-  const number = circleNumbers[circleNumberIndex] + " ";
-  quill.insertText(lineStart, number);
-
-  circleNumberIndex++;
-  if (circleNumberIndex >= circleNumbers.length) {
-    circleNumberIndex = 0;
-  }
-
-  quill.setSelection(index + number.length);
-}
-
 setTimeout(() => {
   const circleBtn = document.querySelector(".ql-circleNumber");
   const noticeBtn = document.querySelector(".ql-noticeMark");
@@ -96,9 +82,9 @@ setTimeout(() => {
   const phoneBtn = document.querySelector(".ql-phoneMark");
 
   if (circleBtn) circleBtn.textContent = "①";
-if (noticeBtn) noticeBtn.textContent = "※";
-if (exampleBtn) exampleBtn.textContent = "예)";
-if (phoneBtn) phoneBtn.textContent = "☎";
+  if (noticeBtn) noticeBtn.textContent = "※";
+  if (exampleBtn) exampleBtn.textContent = "예)";
+  if (phoneBtn) phoneBtn.textContent = "☎";
 }, 100);
 
 let manuals = [];
@@ -236,7 +222,6 @@ function openViewer(id) {
 function openEditorForNew() {
   selectedId = null;
   mode = "edit";
-  circleNumberIndex = 0;
 
   viewerArea.classList.add("hidden");
   editorArea.classList.remove("hidden");
@@ -258,7 +243,6 @@ function openEditorForSelected() {
   if (!manual) return;
 
   mode = "edit";
-  circleNumberIndex = 0;
 
   viewerArea.classList.add("hidden");
   editorArea.classList.remove("hidden");
