@@ -314,3 +314,12 @@ flex-direction:column;
 .view-content .ql-align-right {
   text-align: right;
 }
+
+.ql-circleNumber,
+.ql-noticeMark,
+.ql-exampleMark,
+.ql-phoneMark {
+  font-weight: bold !important;
+  width: auto !important;
+  min-width: 32px !important;
+}
