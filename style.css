@@ -346,6 +346,8 @@ flex-direction:column;
   min-width: 32px !important;
 }
 
+/* 커스텀 툴바 버튼 보이게 강제 수정 */
+
 .ql-toolbar .ql-circleNumber,
 .ql-toolbar .ql-noticeMark,
 .ql-toolbar .ql-exampleMark,
@@ -372,22 +374,6 @@ flex-direction:column;
 .ql-toolbar .ql-exampleMark svg,
 .ql-toolbar .ql-phoneMark svg {
   display: none !important;
-}
-
-.ql-toolbar .ql-circleNumber::after {
-  content: "①";
-}
-
-.ql-toolbar .ql-noticeMark::after {
-  content: "※";
-}
-
-.ql-toolbar .ql-exampleMark::after {
-  content: "예)";
-}
-
-.ql-toolbar .ql-phoneMark::after {
-  content: "☎";
 }
 
 .ql-toolbar .ql-circleNumber:hover,
