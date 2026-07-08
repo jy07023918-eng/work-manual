@@ -182,10 +182,19 @@ button:hover{
     margin-bottom:20px;
 }
 
-.ql-toolbar button.ql-circledNumber::before{
-    content:"①";
+.ql-toolbar.ql-snow button.ql-circledNumber{
+    width:28px;
+    color:#444 !important;
+    font-weight:600;
+}
+
+.ql-toolbar.ql-snow button.ql-circledNumber::before{
+    content:"①" !important;
+    display:block;
+    color:#444 !important;
     font-size:15px;
-    line-height:1;
+    line-height:24px;
+    text-align:center;
 }
 
 .button-row{
