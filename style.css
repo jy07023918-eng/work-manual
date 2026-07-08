@@ -170,6 +170,10 @@ button:hover{
     line-height:1.6;
 }
 
+.ql-editor .ql-indent-1{
+    padding-left:3em;
+}
+
 /* 수정 */
 
 #titleInput,
