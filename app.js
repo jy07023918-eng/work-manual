@@ -21,6 +21,7 @@ const quill = new Quill("#editor", {
         ["bold", "italic", "underline"],
         [{ background: [] }, { color: [] }],
         [{ list: "bullet" }, { list: "ordered" }],
+        [{ indent: "-1" }, { indent: "+1" }],
         ["circledNumber", "clean"]
       ],
       handlers: {
@@ -121,33 +122,40 @@ function stripHtml(html) {
   return div.textContent || div.innerText || "";
 }
 
-function getNextCircledNumber() {
-  const text = quill.getText();
-  const matches = text.match(/[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]/g) || [];
+function updateCircledNumbers(container) {
+  let circledIndex = 0;
+  const orderedItems = container.querySelectorAll("ol li");
 
-  return CIRCLED_NUMBERS[matches.length % CIRCLED_NUMBERS.length];
+  orderedItems.forEach(item => {
+    if (item.classList.contains("ql-indent-1")) {
+      item.dataset.circledNumber = CIRCLED_NUMBERS[circledIndex % CIRCLED_NUMBERS.length];
+      circledIndex += 1;
+    } else {
+      circledIndex = 0;
+      item.removeAttribute("data-circled-number");
+    }
+  });
 }
 
 function insertCircledNumber() {
   quill.focus();
 
   const range = quill.getSelection(true);
-  const marker = `${getNextCircledNumber()} `;
   const [line, offset] = quill.getLine(range.index);
   const lineText = line.domNode.textContent || "";
-  let insertIndex = range.index;
+  let targetIndex = range.index;
 
   if (lineText.trim() && offset > 0) {
     quill.insertText(range.index, "\n", "user");
-    insertIndex = range.index + 1;
+    targetIndex = range.index + 1;
   } else if (offset > 0) {
-    insertIndex = range.index - offset;
+    targetIndex = range.index - offset;
   }
 
-  quill.insertText(insertIndex, marker, "user");
-  quill.formatLine(insertIndex, marker.length, "list", false, "user");
-  quill.formatLine(insertIndex, marker.length, "indent", 1, "user");
-  quill.setSelection(insertIndex + marker.length, 0, "user");
+  quill.formatLine(targetIndex, 1, "list", "ordered", "user");
+  quill.formatLine(targetIndex, 1, "indent", 1, "user");
+  quill.setSelection(targetIndex, 0, "user");
+  updateCircledNumbers(quill.root);
 }
 
 function renderManuals() {
@@ -200,6 +208,7 @@ function openViewer(id) {
   viewTitle.textContent = manual.title || "제목 없음";
   viewTags.textContent = manual.tags ? `🏷 ${manual.tags}` : "";
   viewContent.innerHTML = manual.content || "내용 없음";
+  updateCircledNumbers(viewContent);
 
   editBtn.classList.remove("hidden");
 
@@ -237,6 +246,7 @@ function openEditorForSelected() {
   titleInput.value = manual.title || "";
   tagsInput.value = manual.tags || "";
   quill.root.innerHTML = manual.content || "";
+  updateCircledNumbers(quill.root);
 }
 
 function cancelEdit() {
@@ -251,6 +261,7 @@ function cancelEdit() {
 async function saveManual() {
   const title = titleInput.value.trim();
   const tags = tagsInput.value.trim();
+  updateCircledNumbers(quill.root);
   const content = quill.root.innerHTML.trim();
   const plainText = quill.getText().trim();
 
@@ -356,6 +367,10 @@ onSnapshot(manualQuery, snapshot => {
     const exists = manuals.find(m => m.id === selectedId);
     if (exists) openViewer(selectedId);
   }
+});
+
+quill.on("text-change", () => {
+  updateCircledNumbers(quill.root);
 });
 
 loginBtn.addEventListener("click", login);
