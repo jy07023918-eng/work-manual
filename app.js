@@ -123,6 +123,7 @@ function stripHtml(html) {
 }
 
 function updateCircledNumbers(container) {
+  let listIndex = 0;
   let circledIndex = 0;
   const orderedItems = container.querySelectorAll("ol li");
 
@@ -131,7 +132,9 @@ function updateCircledNumbers(container) {
       item.dataset.circledNumber = CIRCLED_NUMBERS[circledIndex % CIRCLED_NUMBERS.length];
       circledIndex += 1;
     } else {
+      listIndex += 1;
       circledIndex = 0;
+      item.dataset.listNumber = `${listIndex}.`;
       item.removeAttribute("data-circled-number");
     }
   });
