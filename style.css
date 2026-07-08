@@ -382,3 +382,58 @@ flex-direction:column;
 .ql-toolbar .ql-phoneMark:hover {
   background: #d6e9f7 !important;
 }
+
+.ql-editor {
+  counter-reset: circle-counter;
+}
+
+.ql-editor .ql-circle-list-item {
+  counter-increment: circle-counter;
+  padding-left: 34px;
+  position: relative;
+}
+
+.ql-editor .ql-circle-list-item::before {
+  content: counter(circle-counter, cjk-ideographic);
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+.ql-editor .ql-circle-list-item:nth-of-type(1)::before { content: "①"; }
+.ql-editor .ql-circle-list-item:nth-of-type(2)::before { content: "②"; }
+.ql-editor .ql-circle-list-item:nth-of-type(3)::before { content: "③"; }
+.ql-editor .ql-circle-list-item:nth-of-type(4)::before { content: "④"; }
+.ql-editor .ql-circle-list-item:nth-of-type(5)::before { content: "⑤"; }
+.ql-editor .ql-circle-list-item:nth-of-type(6)::before { content: "⑥"; }
+.ql-editor .ql-circle-list-item:nth-of-type(7)::before { content: "⑦"; }
+.ql-editor .ql-circle-list-item:nth-of-type(8)::before { content: "⑧"; }
+.ql-editor .ql-circle-list-item:nth-of-type(9)::before { content: "⑨"; }
+.ql-editor .ql-circle-list-item:nth-of-type(10)::before { content: "⑩"; }
+
+#viewContent {
+  counter-reset: circle-counter;
+}
+
+#viewContent .ql-circle-list-item {
+  counter-increment: circle-counter;
+  padding-left: 34px;
+  position: relative;
+}
+
+#viewContent .ql-circle-list-item::before {
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+#viewContent .ql-circle-list-item:nth-of-type(1)::before { content: "①"; }
+#viewContent .ql-circle-list-item:nth-of-type(2)::before { content: "②"; }
+#viewContent .ql-circle-list-item:nth-of-type(3)::before { content: "③"; }
+#viewContent .ql-circle-list-item:nth-of-type(4)::before { content: "④"; }
+#viewContent .ql-circle-list-item:nth-of-type(5)::before { content: "⑤"; }
+#viewContent .ql-circle-list-item:nth-of-type(6)::before { content: "⑥"; }
+#viewContent .ql-circle-list-item:nth-of-type(7)::before { content: "⑦"; }
+#viewContent .ql-circle-list-item:nth-of-type(8)::before { content: "⑧"; }
+#viewContent .ql-circle-list-item:nth-of-type(9)::before { content: "⑨"; }
+#viewContent .ql-circle-list-item:nth-of-type(10)::before { content: "⑩"; }
