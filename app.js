@@ -14,7 +14,7 @@ import {
 
 const Parchment = Quill.import("parchment");
 
-const CircleList = new Parchment.Attributor.Class(
+const CircleList = new Parchment.ClassAttributor(
   "circleList",
   "ql-circle-list",
   {
