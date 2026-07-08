@@ -1,154 +1,259 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'맑은 고딕',sans-serif;
 }
 
-.view-content strong {
-  color: #0f3d63;
+body{
+    background:#f3f5f7;
 }
 
-.view-content h1,
-.view-content h2,
-.view-content h3 {
-  margin: 24px 0 14px;
-  color: #1f4e79;
+/* 로그인 */
+
+.login-screen{
+    width:100%;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#1f4e79;
 }
 
-.view-content u {
-  text-underline-offset: 4px;
+.login-box{
+    width:420px;
+    background:white;
+    border-radius:15px;
+    padding:40px;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
 }
 
-.view-content a {
-  color: #1f4e79;
-  font-weight: 700;
+.login-box h1{
+    margin-bottom:10px;
 }
 
-.view-content .ql-align-center {
-  text-align: center;
+.login-box p{
+    margin-bottom:15px;
 }
 
-.view-content .ql-align-right {
-  text-align: right;
+.login-box input{
+    width:100%;
+    padding:15px;
+    font-size:16px;
+    margin-bottom:15px;
 }
+
+.login-box button{
+    width:100%;
+}
+
+.error-text{
+    color:red;
+    margin-top:10px;
+}
+
+/* 헤더 */
+
+.top-header{
+    background:#1f4e79;
+    color:white;
+    padding:25px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.app{
+    padding:20px;
+}
+
+.search-section{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+#searchInput{
+    flex:1;
+    padding:15px;
+    font-size:17px;
+}
+
+button{
+    border:none;
+    padding:13px 18px;
+    border-radius:8px;
+    background:#1f4e79;
+    color:white;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:.9;
+}
+
+.sub{
+    background:#888;
+}
+
+.danger{
+    background:#d63031;
+}
+
+/* 레이아웃 */
+
+.layout{
+    display:grid;
+    grid-template-columns:320px 1fr;
+    gap:20px;
+}
+
+/* 목록 */
+
+.manual-list-area,
+.viewer-area,
+.editor-area{
+
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+}
+
+.manual-card{
+
+    border:1px solid #ddd;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:10px;
+    cursor:pointer;
+}
+
+.manual-card:hover{
+
+    background:#eef6ff;
+}
+
+.manual-card.active{
+
+    border:2px solid #1f4e79;
+}
+
+/* 보기 */
+
+.viewer-top{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.tag-text{
+
+    color:#777;
+    margin-top:5px;
+}
+
+.view-content{
+
+    border:1px solid #ddd;
+    border-radius:10px;
+    min-height:500px;
+    padding:20px;
+    background:#fff;
+    overflow:auto;
+}
+
+/* 수정 */
 
 #titleInput,
-#tagsInput {
-  margin-bottom: 15px;
+#tagsInput{
+
+    width:100%;
+    padding:15px;
+    margin-bottom:15px;
+    font-size:16px;
 }
 
-#editor {
-  height: 500px;
-  margin-bottom: 20px;
+#editor{
+
+    height:500px;
+    margin-bottom:20px;
 }
 
-.button-row {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+.button-row{
+
+    display:flex;
+    gap:10px;
 }
 
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, .5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 24px;
+/* 모달 */
+
+.modal{
+
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
-.modal-box {
-  width: min(500px, 100%);
-  background: #fff;
-  border-radius: 12px;
-  padding: 30px;
+.modal-box{
+
+    width:500px;
+    background:white;
+    border-radius:15px;
+    padding:30px;
 }
 
-.modal-box label {
-  display: block;
-  margin-top: 20px;
-  margin-bottom: 8px;
+.modal-box label{
+
+    display:block;
+    margin-top:20px;
+    margin-bottom:8px;
 }
 
-.notice {
-  margin-top: 20px;
-  color: #667085;
-  font-size: 13px;
-  line-height: 1.6;
+.modal-box input{
+
+    width:100%;
+    padding:14px;
 }
 
-.hidden {
-  display: none;
+.notice{
+
+    margin-top:20px;
+    color:#777;
+    font-size:13px;
 }
 
-.ql-toolbar button.ql-circleNumber,
-.ql-toolbar button.ql-noticeMark,
-.ql-toolbar button.ql-exampleMark,
-.ql-toolbar button.ql-phoneMark {
-  width: auto !important;
-  min-width: 38px !important;
-  height: 28px !important;
-  padding: 3px 8px !important;
-  margin: 0 3px !important;
-  color: #1f4e79 !important;
-  background: #e8f2fb !important;
-  border: 1px solid #9bbbd6 !important;
-  border-radius: 6px !important;
-  font-size: 13px !important;
-  font-weight: 700 !important;
-  line-height: 20px !important;
-  text-align: center !important;
+.hidden{
+
+    display:none;
 }
 
-.ql-toolbar button.ql-circleNumber:hover,
-.ql-toolbar button.ql-noticeMark:hover,
-.ql-toolbar button.ql-exampleMark:hover,
-.ql-toolbar button.ql-phoneMark:hover {
-  background: #d6e9f7 !important;
+/* 모바일 */
+
+@media(max-width:900px){
+
+.layout{
+
+grid-template-columns:1fr;
+
 }
 
-.ql-toolbar .ql-circleNumber svg,
-.ql-toolbar .ql-noticeMark svg,
-.ql-toolbar .ql-exampleMark svg,
-.ql-toolbar .ql-phoneMark svg {
-  display: none !important;
+.top-header{
+
+flex-direction:column;
+gap:15px;
+
 }
 
-@media (max-width: 900px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
+.search-section{
 
-  .top-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+flex-direction:column;
 
-  .search-section {
-    flex-direction: column;
-  }
 }
 
-@media (max-width: 560px) {
-  .login-box,
-  .modal-box,
-  .manual-list-area,
-  .viewer-area,
-  .editor-area {
-    padding: 20px;
-  }
-
-  .top-header {
-    padding: 22px;
-  }
-
-  .app {
-    padding: 14px;
-  }
-
-  .viewer-top {
-    flex-direction: column;
-  }
-
-  .view-content {
-    min-height: 360px;
-    padding: 18px;
-  }
 }
