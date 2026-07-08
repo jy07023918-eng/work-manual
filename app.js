@@ -12,51 +12,18 @@ import {
   serverTimestamp
 } from "./firebase.js";
 
-const customToolbar = [
-  [{ header: [1, 2, 3, false] }],
-  ["bold", "italic", "underline"],
-  [{ background: [] }, { color: [] }],
-  [{ list: "bullet" }, { list: "ordered" }],
-  ["circleNumber", "noticeMark", "exampleMark", "phoneMark"],
-  ["clean"]
-];
-
 const quill = new Quill("#editor", {
   theme: "snow",
   modules: {
-    toolbar: {
-      container: customToolbar,
-      handlers: {
-        circleNumber: function () {
-          insertTextAtCursor("① ");
-        },
-        noticeMark: function () {
-          insertTextAtCursor("※ ");
-        },
-        exampleMark: function () {
-          insertTextAtCursor("예) ");
-        },
-        phoneMark: function () {
-          insertTextAtCursor("☎ ");
-        }
-      }
-    }
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "underline"],
+      [{ background: [] }, { color: [] }],
+      [{ list: "bullet" }, { list: "ordered" }],
+      ["clean"]
+    ]
   }
 });
-
-function insertTextAtCursor(text) {
-  const range = quill.getSelection(true);
-  const index = range ? range.index : quill.getLength();
-  quill.insertText(index, text);
-  quill.setSelection(index + text.length);
-}
-
-setTimeout(() => {
-  document.querySelector(".ql-circleNumber").textContent = "①";
-  document.querySelector(".ql-noticeMark").textContent = "※";
-  document.querySelector(".ql-exampleMark").textContent = "예)";
-  document.querySelector(".ql-phoneMark").textContent = "☎";
-}, 100);
 
 let manuals = [];
 let selectedId = null;
@@ -100,13 +67,16 @@ async function getSettings() {
   const snap = await getDoc(settingsRef);
 
   if (!snap.exists()) {
-    const defaults = {
+    await setDoc(settingsRef, {
       accessPassword: "1234",
       adminPassword: "admin1234",
       updatedAt: serverTimestamp()
+    });
+
+    return {
+      accessPassword: "1234",
+      adminPassword: "admin1234"
     };
-    await setDoc(settingsRef, defaults);
-    return defaults;
   }
 
   return snap.data();
@@ -121,7 +91,7 @@ async function login() {
     mainApp.classList.remove("hidden");
     loginError.textContent = "";
   } else {
-    loginError.textContent = "비밀번호가 맞지 않습니다.";
+    loginError.textContent = "비밀번호가 틀렸습니다.";
   }
 }
 
@@ -134,39 +104,42 @@ function stripHtml(html) {
 function renderManuals() {
   const keyword = searchInput.value.toLowerCase().trim();
 
-  const filtered = manuals.filter(manual => {
-    const title = (manual.title || "").toLowerCase();
-    const tags = (manual.tags || "").toLowerCase();
-    const content = stripHtml(manual.content || "").toLowerCase();
-    return title.includes(keyword) || tags.includes(keyword) || content.includes(keyword);
+  const filtered = manuals.filter(m => {
+    const title = (m.title || "").toLowerCase();
+    const tags = (m.tags || "").toLowerCase();
+    const content = stripHtml(m.content || "").toLowerCase();
+
+    return (
+      title.includes(keyword) ||
+      tags.includes(keyword) ||
+      content.includes(keyword)
+    );
   });
 
   manualList.innerHTML = "";
 
   if (filtered.length === 0) {
-    manualList.innerHTML = '<p class="empty">검색 결과가 없습니다.</p>';
+    manualList.innerHTML = `<p class="empty">검색 결과가 없습니다.</p>`;
     return;
   }
 
-  filtered.forEach(manual => {
+  filtered.forEach(m => {
     const card = document.createElement("div");
     card.className = "manual-card";
-    if (manual.id === selectedId) card.classList.add("active");
+    if (m.id === selectedId) card.classList.add("active");
 
-    const title = document.createElement("h3");
-    title.textContent = manual.title || "제목 없음";
+    card.innerHTML = `
+      <h3>${m.title || "제목 없음"}</h3>
+      <p>🏷 ${m.tags || "키워드 없음"}</p>
+    `;
 
-    const tags = document.createElement("p");
-    tags.textContent = manual.tags ? `태그: ${manual.tags}` : "태그 없음";
-
-    card.append(title, tags);
-    card.addEventListener("click", () => openViewer(manual.id));
+    card.addEventListener("click", () => openViewer(m.id));
     manualList.appendChild(card);
   });
 }
 
 function openViewer(id) {
-  const manual = manuals.find(item => item.id === id);
+  const manual = manuals.find(m => m.id === id);
   if (!manual) return;
 
   selectedId = id;
@@ -176,10 +149,11 @@ function openViewer(id) {
   editorArea.classList.add("hidden");
 
   viewTitle.textContent = manual.title || "제목 없음";
-  viewTags.textContent = manual.tags ? `태그: ${manual.tags}` : "";
+  viewTags.textContent = manual.tags ? `🏷 ${manual.tags}` : "";
   viewContent.innerHTML = manual.content || "내용 없음";
 
   editBtn.classList.remove("hidden");
+
   renderManuals();
 }
 
@@ -203,7 +177,7 @@ function openEditorForSelected() {
     return;
   }
 
-  const manual = manuals.find(item => item.id === selectedId);
+  const manual = manuals.find(m => m.id === selectedId);
   if (!manual) return;
 
   mode = "edit";
@@ -304,7 +278,7 @@ async function changePassword() {
   const settings = await getSettings();
 
   if (adminPassword !== settings.adminPassword) {
-    alert("관리자 비밀번호가 맞지 않습니다.");
+    alert("관리자 비밀번호가 틀렸습니다.");
     return;
   }
 
@@ -330,23 +304,31 @@ onSnapshot(manualQuery, snapshot => {
   renderManuals();
 
   if (selectedId && mode === "view") {
-    const exists = manuals.find(manual => manual.id === selectedId);
+    const exists = manuals.find(m => m.id === selectedId);
     if (exists) openViewer(selectedId);
   }
 });
 
 loginBtn.addEventListener("click", login);
 
-passwordInput.addEventListener("keydown", event => {
-  if (event.key === "Enter") login();
+passwordInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") login();
 });
 
 searchInput.addEventListener("input", renderManuals);
+
 newManualBtn.addEventListener("click", openEditorForNew);
 editBtn.addEventListener("click", openEditorForSelected);
 saveBtn.addEventListener("click", saveManual);
 deleteBtn.addEventListener("click", removeManual);
 cancelEditBtn.addEventListener("click", cancelEdit);
-adminBtn.addEventListener("click", () => adminModal.classList.remove("hidden"));
-closeAdminBtn.addEventListener("click", () => adminModal.classList.add("hidden"));
+
+adminBtn.addEventListener("click", () => {
+  adminModal.classList.remove("hidden");
+});
+
+closeAdminBtn.addEventListener("click", () => {
+  adminModal.classList.add("hidden");
+});
+
 changePasswordBtn.addEventListener("click", changePassword);
