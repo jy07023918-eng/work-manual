@@ -346,44 +346,53 @@ flex-direction:column;
   min-width: 32px !important;
 }
 
-/* 커스텀 툴바 버튼 강제 표시 */
-
-.ql-toolbar button.ql-circleNumber::before {
-  content: "①";
-}
-
-.ql-toolbar button.ql-noticeMark::before {
-  content: "※";
-}
-
-.ql-toolbar button.ql-exampleMark::before {
-  content: "예)";
-}
-
-.ql-toolbar button.ql-phoneMark::before {
-  content: "☎";
-}
-
-.ql-toolbar button.ql-circleNumber,
-.ql-toolbar button.ql-noticeMark,
-.ql-toolbar button.ql-exampleMark,
-.ql-toolbar button.ql-phoneMark {
-  color: #1f4e79 !important;
-  background: #eef5fb !important;
-  border: 1px solid #c9ddeb !important;
-  border-radius: 6px !important;
+.ql-toolbar .ql-circleNumber,
+.ql-toolbar .ql-noticeMark,
+.ql-toolbar .ql-exampleMark,
+.ql-toolbar .ql-phoneMark {
   width: auto !important;
-  min-width: 36px !important;
+  min-width: 38px !important;
   height: 28px !important;
   padding: 3px 8px !important;
   margin: 0 3px !important;
-  font-weight: bold !important;
+
+  color: #1f4e79 !important;
+  background: #e8f2fb !important;
+  border: 1px solid #9bbbd6 !important;
+  border-radius: 6px !important;
+
   font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 20px !important;
+  text-align: center !important;
 }
 
-.ql-toolbar button.ql-circleNumber:hover,
-.ql-toolbar button.ql-noticeMark:hover,
-.ql-toolbar button.ql-exampleMark:hover,
-.ql-toolbar button.ql-phoneMark:hover {
-  background: #dcecf8 !important;
+.ql-toolbar .ql-circleNumber svg,
+.ql-toolbar .ql-noticeMark svg,
+.ql-toolbar .ql-exampleMark svg,
+.ql-toolbar .ql-phoneMark svg {
+  display: none !important;
+}
+
+.ql-toolbar .ql-circleNumber::after {
+  content: "①";
+}
+
+.ql-toolbar .ql-noticeMark::after {
+  content: "※";
+}
+
+.ql-toolbar .ql-exampleMark::after {
+  content: "예)";
+}
+
+.ql-toolbar .ql-phoneMark::after {
+  content: "☎";
+}
+
+.ql-toolbar .ql-circleNumber:hover,
+.ql-toolbar .ql-noticeMark:hover,
+.ql-toolbar .ql-exampleMark:hover,
+.ql-toolbar .ql-phoneMark:hover {
+  background: #d6e9f7 !important;
 }
