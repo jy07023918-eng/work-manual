@@ -20,20 +20,8 @@ const quill = new Quill("#editor", {
       ["bold", "italic", "underline"],
       [{ background: [] }, { color: [] }],
       [{ list: "bullet" }, { list: "ordered" }],
-      [{ indent: "-1" }, { indent: "+1" }],
       ["clean"]
-    ],
-    keyboard: {
-      bindings: {
-        tab: {
-          key: 9,
-          handler: function () {
-            this.quill.format("indent", "+1");
-            return false;
-          }
-        }
-      }
-    }
+    ]
   }
 });
 
