@@ -170,8 +170,8 @@ button:hover{
     line-height:1.6;
 }
 
-.ql-editor .ql-indent-1{
-    padding-left:3em;
+.ql-editor ol li.ql-indent-1::before{
+    content:attr(data-circled-number) " ";
 }
 
 /* 수정 */
